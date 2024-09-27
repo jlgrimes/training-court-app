@@ -16,9 +16,9 @@ class PokemonSprites extends StatelessWidget {
       return SizedBox.shrink();
     }
 
-    if (pokemonNameString!.length == 1) {
+    if (!pokemonNameString!.contains(',')) {
       return Row(children: [
-        Sprite(pokemonNameString!.split(',')[0]),
+        Sprite(pokemonNameString),
       ]);
     }
 
