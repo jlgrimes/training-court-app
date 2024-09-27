@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeScreen> {
-  final _future = Supabase.instance.client
+  final _logsFuture = Supabase.instance.client
       .from('logs')
       .select('*')
       .eq('user', Supabase.instance.client.auth.currentUser!.id);
@@ -35,9 +35,18 @@ class _HomePageState extends State<HomeScreen> {
                   Tab(icon: Icon(Icons.person)),
                 ],
               )),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              LogsScreen(),
+              FutureBuilder(
+                  future: _logsFuture,
+                  builder: (context, snapshot) {
+                    final logs = snapshot.data!;
+                    return ListView.builder(
+                        itemCount: logs.length,
+                        itemBuilder: ((context, index) {
+                          return Text(logs[index].toString());
+                        }));
+                  }),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
             ],
