@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:trainingcourt/models/generated_classes.dart';
 import 'package:trainingcourt/screens/logs_screen.dart';
+import 'package:trainingcourt/screens/tournaments_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +15,16 @@ class _HomePageState extends State<HomeScreen> {
   final _logsFuture = Supabase.instance.client
       .from('logs')
       .select('*')
-      .eq('user', Supabase.instance.client.auth.currentUser!.id);
+      .eq('user', Supabase.instance.client.auth.currentUser!.id)
+      .order('date_from', ascending: false)
+      .withConverter(Logs.converter);
+
+  final _tournamentsFuture = Supabase.instance.client
+      .from('tournaments')
+      .select('*')
+      .eq('user', Supabase.instance.client.auth.currentUser!.id)
+      .order('date_from', ascending: false)
+      .withConverter(Tournaments.converter);
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +52,14 @@ class _HomePageState extends State<HomeScreen> {
                   future: _logsFuture,
                   builder: (context, snapshot) {
                     final logs = snapshot.data!;
-                    return ListView.builder(
-                        itemCount: logs.length,
-                        itemBuilder: ((context, index) {
-                          return Text(logs[index].toString());
-                        }));
+                    return LogsScreen(logs);
                   }),
-              Icon(Icons.directions_transit),
+              FutureBuilder(
+                  future: _tournamentsFuture,
+                  builder: (context, snapshot) {
+                    final tournaments = snapshot.data!;
+                    return TournamentsScreen(tournaments);
+                  }),
               Icon(Icons.directions_bike),
             ],
           ),

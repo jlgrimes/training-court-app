@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trainingcourt/models/generated_classes.dart';
 
-class LogsScreen extends StatelessWidget {
-  List<Logs> logs;
+class TournamentsScreen extends StatelessWidget {
+  List<Tournaments> tournaments;
 
-  LogsScreen(this.logs, {super.key});
+  TournamentsScreen(this.tournaments, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: logs.length,
+        itemCount: tournaments.length,
         itemBuilder: ((context, index) {
           return Card(
             child: Column(
               children: [
-                Text(DateFormat('MM/dd/yyyy').format(logs[index].createdAt!)),
+                Text(tournaments[index].name),
+                Text(DateFormat('MM/dd/yyyy')
+                    .format(tournaments[index].createdAt!)),
               ],
             ),
           );
