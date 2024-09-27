@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trainingcourt/components/sprite.dart';
+import 'package:trainingcourt/components/tournaments/tournament_preview.dart';
 import 'package:trainingcourt/models/generated_classes.dart';
 
 class TournamentsScreen extends StatelessWidget {
@@ -12,15 +14,7 @@ class TournamentsScreen extends StatelessWidget {
     return ListView.builder(
         itemCount: tournaments.length,
         itemBuilder: ((context, index) {
-          return Card(
-            child: Column(
-              children: [
-                Text(tournaments[index].name),
-                Text(DateFormat('MM/dd/yyyy')
-                    .format(tournaments[index].createdAt!)),
-              ],
-            ),
-          );
+          return TournamentPreview(tournaments[index]);
         }));
   }
 }
