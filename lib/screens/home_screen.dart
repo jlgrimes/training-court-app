@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:trainingcourt/screens/logs_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomeScreen> {
+  final _future = Supabase.instance.client
+      .from('logs')
+      .select('*')
+      .eq('user', Supabase.instance.client.auth.currentUser!.id);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -23,7 +37,7 @@ class HomeScreen extends StatelessWidget {
               )),
           body: const TabBarView(
             children: [
-              Icon(Icons.directions_car),
+              LogsScreen(),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
             ],
