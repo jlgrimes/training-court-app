@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:trainingcourt/auth/sign_in.dart';
+import 'package:trainingcourt/screens/home_screen.dart';
 
 void main() async {
   await dotenv.load();
@@ -86,24 +87,22 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: SignIn(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+
+    if (Supabase.instance.client.auth.currentUser == null) {
+      return Scaffold(
+        appBar: AppBar(
+          // TRY THIS: Try changing the color here to a specific color (to
+          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+          // change color while the other colors stay the same.
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Center(child: SignIn()),
+      );
+    }
+
+    return HomeScreen();
   }
 }

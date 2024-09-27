@@ -14,14 +14,14 @@ class HomeScreen extends StatefulWidget {
 class _HomePageState extends State<HomeScreen> {
   final _logsFuture = Supabase.instance.client
       .from('logs')
-      .select('*')
+      .select()
       .eq('user', Supabase.instance.client.auth.currentUser!.id)
-      .order('date_from', ascending: false)
+      .order('created_at', ascending: false)
       .withConverter(Logs.converter);
 
   final _tournamentsFuture = Supabase.instance.client
       .from('tournaments')
-      .select('*')
+      .select()
       .eq('user', Supabase.instance.client.auth.currentUser!.id)
       .order('date_from', ascending: false)
       .withConverter(Tournaments.converter);
@@ -36,6 +36,10 @@ class _HomePageState extends State<HomeScreen> {
         ) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
           }
 
           final _logs = snapshot.data![0];
