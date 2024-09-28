@@ -9,7 +9,7 @@ class Sprite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: default icon case
-    // if (pokemonName == null) return null;
+    if (pokemonName == null || pokemonName!.isEmpty) return SizedBox.shrink();
 
     return SpriteFromUrl('https://limitlesstcg.s3.us-east-2.amazonaws.com/pokemon/gen9/$pokemonName.png');
   }

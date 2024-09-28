@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trainingcourt/components/archetype/archetype.utils.dart';
 import 'package:trainingcourt/components/sprites/pokemon_sprites.dart';
+import 'package:trainingcourt/components/sprites/sprite.dart';
 import 'package:trainingcourt/components/sprites/sprite_from_url.dart';
 import 'package:trainingcourt/models/pokedex.dart';
 import 'package:trainingcourt/models/provider.dart';
 
 /// The homepage of our application
 class ArchetypeAutocomplete extends StatelessWidget {
-  const ArchetypeAutocomplete({super.key});
+  final void Function(String) handlePokemonSelect;
+  const ArchetypeAutocomplete({ required this.handlePokemonSelect, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +69,10 @@ class ArchetypeAutocomplete extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final String option = options.elementAt(index);
               return ListTile(
-                title: SpriteFromUrl(option),
-                subtitle: Text(imgSrcToPkmnName(option)),
+                title: Row(children: [
+                  SpriteFromUrl(option),
+                  Text(imgSrcToPkmnName(option))
+                ]),
                 onTap: () {
                   onSelected(imgSrcToPkmnName(option));
                 },
@@ -81,15 +85,13 @@ class ArchetypeAutocomplete extends StatelessWidget {
   },
 
   onSelected: (String selectedPokemon) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('You selected ${selectedPokemon}!'),
-      ),
-    );
+    handlePokemonSelect(selectedPokemon);
   },
 
   fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
     return TextField(
+      autocorrect: false,
+      enableSuggestions: false,
       controller: textEditingController,
       focusNode: focusNode,
       decoration: InputDecoration(

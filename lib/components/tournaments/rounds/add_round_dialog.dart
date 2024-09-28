@@ -9,11 +9,16 @@ class AddRoundDialog extends StatefulWidget {
 class _AddRoundDialogState extends State<AddRoundDialog> {
   // Initialize the selection state for each toggle button
   List<bool> isSelected = [false, false, false];
+  List<String> selectedArchetype = ['', ''];
     // Text input state
   String textInput = '';
 
   // Labels for the toggle options
   final List<String> toggleOptions = ['W', 'L', 'T'];
+
+  void handlePokemonSelect(String message, int idx) {
+    selectedArchetype[idx] = message;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,8 @@ return AlertDialog(
           title: const Text('Add round'),
           content: Column(
             children: [
-              ArchetypeAutocomplete(),
+              ArchetypeAutocomplete(handlePokemonSelect: (p0) => handlePokemonSelect(p0, 0)),
+              ArchetypeAutocomplete(handlePokemonSelect: (p0) => handlePokemonSelect(p0, 1)),
                           TextField(
               onChanged: (text) {
                 setState(() {
