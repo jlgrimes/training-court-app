@@ -13,8 +13,9 @@ Future<void> _dialogBuilder(BuildContext context) {
 }
 class TournamentsScreen extends StatelessWidget {
   List<Tournaments> tournaments;
+  List<Tournament_rounds> tournamentRounds;
 
-  TournamentsScreen(this.tournaments, {super.key});
+  TournamentsScreen(this.tournaments, this.tournamentRounds, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,9 @@ class TournamentsScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: tournaments.length,
         itemBuilder: ((context, index) {
-          return TournamentPreview(tournaments[index]);
+          List<Tournament_rounds> rounds = tournamentRounds.where((round) => round.tournament == tournaments[index].id).toList();
+
+          return TournamentPreview(tournaments[index], rounds);
         })),
                           floatingActionButton: FloatingActionButton(onPressed: (){
                             _dialogBuilder(context);

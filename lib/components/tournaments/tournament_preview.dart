@@ -7,8 +7,9 @@ import 'package:trainingcourt/screens/tournament_detail_screen.dart';
 
 class TournamentPreview extends StatelessWidget {
   Tournaments tournament;
+  List<Tournament_rounds> rounds;
 
-  TournamentPreview(this.tournament, {super.key});
+  TournamentPreview(this.tournament, this.rounds, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class TournamentPreview extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => TournamentDetailScreen(
                       tournament: tournament,
+                      rounds: rounds,
                     )));
       },
       child: Card(

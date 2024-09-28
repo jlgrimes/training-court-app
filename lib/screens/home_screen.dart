@@ -26,14 +26,22 @@ class _HomePageState extends State<HomeScreen> {
       .order('date_from', ascending: false)
       .withConverter(Tournaments.converter);
 
+  final _tournamentRoundsFuture = Supabase.instance.client
+      .from('tournament rounds')
+      .select()
+      .eq('user', Supabase.instance.client.auth.currentUser!.id)
+      .order('round_num', ascending: true)
+      .withConverter(Tournament_rounds.converter);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.wait([_logsFuture, _tournamentsFuture]),
+        future: Future.wait([_logsFuture, _tournamentsFuture, _tournamentRoundsFuture]),
         builder: (
           context,
           AsyncSnapshot<List<dynamic>> snapshot,
         ) {
+          print(snapshot.toString());
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
@@ -44,6 +52,7 @@ class _HomePageState extends State<HomeScreen> {
 
           final _logs = snapshot.data![0];
           final _tournaments = snapshot.data![1];
+          final _tournamentRounds = snapshot.data![2];
 
           return DefaultTabController(
               length: 3,
@@ -66,7 +75,7 @@ class _HomePageState extends State<HomeScreen> {
                     )),
                 body: TabBarView(
                   children: [
-                    TournamentsScreen(_tournaments),
+                    TournamentsScreen(_tournaments, _tournamentRounds),
                     LogsScreen(_logs),
                     Icon(Icons.directions_bike),
                   ],
