@@ -8,12 +8,12 @@ class AddTournamentDialog extends StatefulWidget {
 
 class _AddTournamentDialogState extends State<AddTournamentDialog> {
     // Text input state
-  String textInput = '';
+  String? tournamentName;
 
   // Date picker state
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
 
-  List<String> selectedArchetype = ['', ''];
+  List<String?> selectedArchetype = [null, null];
 
     // Define the list of values (powers of 2 from 1024 to 1, with "t" prefix except Champion and Finalist)
   final List<String> _dropdownValues = [
@@ -72,7 +72,7 @@ return Dialog.fullscreen(
         children: [
           TextField(
             onChanged: (text) {
-              // Handle text input here
+              tournamentName = text;
             },
             decoration: InputDecoration(
               labelText: 'Tournament name',
@@ -84,7 +84,7 @@ return Dialog.fullscreen(
             children: [
               Expanded(
                 child: Text(
-                  'Date: ${selectedDate.toLocal()}',
+                  selectedDate != null ? 'Date: ${selectedDate!.toLocal()}' : 'Select a date',
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -145,6 +145,9 @@ return Dialog.fullscreen(
           TextButton(
             child: const Text('Add'),
             onPressed: () {
+              if (tournamentName == null || selectedDate == null || selectedArchetype[0] == null) {
+                return;
+              }
               // Handle add action here
               Navigator.of(context).pop();
             },
