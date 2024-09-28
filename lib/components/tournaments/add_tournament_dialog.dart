@@ -15,12 +15,27 @@ class _AddTournamentDialogState extends State<AddTournamentDialog> {
 
   List<String> selectedArchetype = ['', ''];
 
+    // Define the list of values (powers of 2 from 1024 to 1, with "t" prefix except Champion and Finalist)
+  final List<String> _dropdownValues = [
+    't1024',
+    't512',
+    't256',
+    't128',
+    't64',
+    't32',
+    't16',
+    't8',
+    't4',
+    'finalist',  // For 2nd place, we use "finalist"
+    'Champion',  // This corresponds to 1st place
+  ];
+
+  // Initially selected value
+  String? _selectedValue = null;
+
   void handlePokemonSelect(String message, int idx) {
     selectedArchetype[idx] = message;
   }
-
-  // Labels for the toggle options
-  final List<String> toggleOptions = ['W', 'L', 'T'];
 
     Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -85,6 +100,33 @@ return Dialog.fullscreen(
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
             ),
           DoubleArchetypeSelector(handlePokemonSelect),
+                    const SizedBox(height: 16),
+          DropdownButton<String>(
+  value: _selectedValue,  // This can be null initially
+  hint: Text("Select a placement"),
+  items: _dropdownValues.map((String value) {
+    // Prepend "Top" to all values except for "Champion" and "finalist"
+    String displayValue;
+    if (value == 'Champion') {
+      displayValue = 'Champion';
+    } else if (value == 'finalist') {
+      displayValue = 'Finalist';
+    } else {
+      // For values with "t" prefix, extract the number after "t" and prepend "Top"
+      displayValue = 'Top ${value.substring(1)}';
+    }
+
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(displayValue),
+    );
+  }).toList(),
+  onChanged: (String? newValue) {
+    setState(() {
+      _selectedValue = newValue!;
+    });
+  },
+)
         ],
       ),
     ),
