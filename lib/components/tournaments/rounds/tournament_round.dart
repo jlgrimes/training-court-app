@@ -14,7 +14,7 @@ class TournamentRound extends StatelessWidget {
       child: Padding(
           padding: EdgeInsets.all(16.0),
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               round.roundNum!.toString(),
               style: TextStyle(fontWeight: FontWeight.bold),
