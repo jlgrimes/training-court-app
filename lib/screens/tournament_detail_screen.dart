@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:trainingcourt/components/tournaments/rounds/add_round_dialog.dart';
 import 'package:trainingcourt/components/tournaments/rounds/tournament_round.dart';
 import 'package:trainingcourt/models/generated_classes.dart';
+
+Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AddRoundDialog();
+      },
+    );
+}
 
 class TournamentDetailScreen extends StatefulWidget {
   Tournaments tournament;
@@ -51,6 +61,9 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                     // the App.build method, and use it to set our appbar title.
                     title: Text(tournament.name),
                 ),
+                floatingActionButton: FloatingActionButton(onPressed: (){
+                            _dialogBuilder(context);
+                          }),
                 body: Center(child: snapshot.hasData ? ListView.builder(
               itemCount: tournamentRounds.length,
               itemBuilder: ((context, index) {
