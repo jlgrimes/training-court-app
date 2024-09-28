@@ -59,15 +59,15 @@ class _HomePageState extends State<HomeScreen> {
                     title: Text('Training Court'),
                     bottom: const TabBar(
                       tabs: [
-                        Tab(icon: Icon(Icons.article)),
                         Tab(icon: Icon(Icons.emoji_events)),
+                        Tab(icon: Icon(Icons.article)),
                         Tab(icon: Icon(Icons.person)),
                       ],
                     )),
                 body: TabBarView(
                   children: [
-                    LogsScreen(_logs),
                     TournamentsScreen(_tournaments),
+                    LogsScreen(_logs),
                     Icon(Icons.directions_bike),
                   ],
                 ),
