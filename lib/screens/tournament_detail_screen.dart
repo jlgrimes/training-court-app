@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:trainingcourt/components/sprites/pokemon_sprites.dart';
 import 'package:trainingcourt/components/tournaments/rounds/add_round_dialog.dart';
 import 'package:trainingcourt/components/tournaments/rounds/tournament_round.dart';
 import 'package:trainingcourt/models/generated_classes.dart';
@@ -41,7 +42,10 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                         Theme.of(context).colorScheme.inversePrimary,
                     // Here we take the value from the MyHomePage object that was created by
                     // the App.build method, and use it to set our appbar title.
-                    title: Text(tournament.name),
+                    title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      Text(tournament.name),
+                      PokemonSprites(tournament.deck)
+                    ],),
                 ),
                 floatingActionButton: FloatingActionButton(onPressed: (){
                             _dialogBuilder(context);

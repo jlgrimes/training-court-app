@@ -36,6 +36,8 @@ class _HomePageState extends State<HomeScreen> {
 
   final Future<dynamic> _pokedexFuture = http.get(Uri.parse('https://www.trainingcourt.app/api/pokedex'));
 
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -57,6 +59,18 @@ class _HomePageState extends State<HomeScreen> {
           final _tournamentRounds = snapshot.data![2];
           final _pokedex = snapshot.data![3];
 
+          List<Widget> _pages = <Widget>[
+            TournamentsScreen(_tournaments, _tournamentRounds),
+            LogsScreen(_logs),
+            Icon(Icons.directions_bike),
+          ];
+
+          void _onItemTapped(int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }
+
           return DefaultTabController(
               length: 3,
               child: Scaffold(
@@ -68,21 +82,13 @@ class _HomePageState extends State<HomeScreen> {
                         Theme.of(context).colorScheme.inversePrimary,
                     // Here we take the value from the MyHomePage object that was created by
                     // the App.build method, and use it to set our appbar title.
-                    title: Text('Training Court'),
-                    bottom: const TabBar(
-                      tabs: [
-                        Tab(icon: Icon(Icons.emoji_events)),
-                        Tab(icon: Icon(Icons.article)),
-                        Tab(icon: Icon(Icons.person)),
-                      ],
-                    )),
-                body: TabBarView(
-                  children: [
-                    TournamentsScreen(_tournaments, _tournamentRounds),
-                    LogsScreen(_logs),
-                    Icon(Icons.directions_bike),
-                  ],
-                ),
+                    title: Text('Training Court'),),
+                body: _pages.elementAt(_selectedIndex),
+                bottomNavigationBar: BottomNavigationBar(items: [
+                  BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'Tournaments',),
+                  BottomNavigationBarItem(icon: Icon(Icons.article), label: 'Battle logs'),
+                  BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+                ], currentIndex: _selectedIndex, onTap: _onItemTapped),
               ));
         });
   }
