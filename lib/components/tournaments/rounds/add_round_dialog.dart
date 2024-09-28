@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trainingcourt/components/archetype/archetype_autocomplete.dart';
+import 'package:trainingcourt/components/archetype/double_archetype_selector.dart';
 
 class AddRoundDialog extends StatefulWidget {
   @override
@@ -26,8 +27,7 @@ return AlertDialog(
           title: const Text('Add round'),
           content: Column(
             children: [
-              ArchetypeAutocomplete(handlePokemonSelect: (p0) => handlePokemonSelect(p0, 0)),
-              ArchetypeAutocomplete(handlePokemonSelect: (p0) => handlePokemonSelect(p0, 1)),
+DoubleArchetypeSelector(handlePokemonSelect),
                           TextField(
               onChanged: (text) {
                 setState(() {

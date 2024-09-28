@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trainingcourt/components/archetype/double_archetype_selector.dart';
 
 class AddTournamentDialog extends StatefulWidget {
   @override
@@ -11,6 +12,12 @@ class _AddTournamentDialogState extends State<AddTournamentDialog> {
 
   // Date picker state
   DateTime selectedDate = DateTime.now();
+
+  List<String> selectedArchetype = ['', ''];
+
+  void handlePokemonSelect(String message, int idx) {
+    selectedArchetype[idx] = message;
+  }
 
   // Labels for the toggle options
   final List<String> toggleOptions = ['W', 'L', 'T'];
@@ -46,13 +53,14 @@ return Dialog.fullscreen(
     body: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
             onChanged: (text) {
               // Handle text input here
             },
             decoration: InputDecoration(
-              labelText: 'Enter text',
+              labelText: 'Tournament name',
               border: OutlineInputBorder(),
             ),
           ),
@@ -61,7 +69,7 @@ return Dialog.fullscreen(
             children: [
               Expanded(
                 child: Text(
-                  'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],
+                  'Date: ${selectedDate.toLocal()}',
                   style: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -71,6 +79,12 @@ return Dialog.fullscreen(
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          Text(
+              'My deck', // Label for the group
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
+            ),
+          DoubleArchetypeSelector(handlePokemonSelect),
         ],
       ),
     ),
