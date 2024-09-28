@@ -4,23 +4,24 @@ import 'package:trainingcourt/components/tournaments/rounds/tournament_round.dar
 import 'package:trainingcourt/models/generated_classes.dart';
 
 class TournamentDetailScreen extends StatefulWidget {
-  String tournamentId;
+  Tournaments tournament;
 
-  TournamentDetailScreen({super.key, required this.tournamentId});
+  TournamentDetailScreen({super.key, required this.tournament});
 
   @override
   State<TournamentDetailScreen> createState() =>
-      _TournamentDetailScreenState(tournamentId);
+      _TournamentDetailScreenState(tournament);
 }
 
 class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   dynamic _tournamentDetailsFuture;
+  Tournaments tournament;
 
-  _TournamentDetailScreenState(tournamentId) {
+  _TournamentDetailScreenState(this.tournament) {
     _tournamentDetailsFuture = Supabase.instance.client
         .from('tournament rounds')
         .select('*')
-        .eq('tournament', tournamentId)
+        .eq('tournament', tournament.id)
         .order('round_num', ascending: true)
         .withConverter(Tournament_rounds.converter);
   }
@@ -35,11 +36,23 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
         ) {
           final tournamentRounds = snapshot.data!;
 
-          return ListView.builder(
+          return Scaffold(
+                appBar: AppBar(
+                    // TRY THIS: Try changing the color here to a specific color (to
+                    // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+                    // change color while the other colors stay the same.
+                    backgroundColor:
+                        Theme.of(context).colorScheme.inversePrimary,
+                    // Here we take the value from the MyHomePage object that was created by
+                    // the App.build method, and use it to set our appbar title.
+                    title: Text(tournament.name),
+                ),
+                body: Center(child: ListView.builder(
               itemCount: tournamentRounds.length,
               itemBuilder: ((context, index) {
                 return TournamentRound(tournamentRounds[index]);
-              }));
+              })))
+              );
         });
   }
 }

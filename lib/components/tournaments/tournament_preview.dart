@@ -18,7 +18,7 @@ class TournamentPreview extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => TournamentDetailScreen(
-                      tournamentId: tournament.id,
+                      tournament: tournament,
                     )));
       },
       child: Card(
