@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:trainingcourt/components/archetype/double_archetype_selector.dart';
 
 class AddTournamentDialog extends StatefulWidget {
@@ -31,7 +32,7 @@ class _AddTournamentDialogState extends State<AddTournamentDialog> {
   ];
 
   // Initially selected value
-  String? _selectedValue = null;
+  String? _placement = null;
 
   void handlePokemonSelect(String message, int idx) {
     selectedArchetype[idx] = message;
@@ -102,7 +103,7 @@ return Dialog.fullscreen(
           DoubleArchetypeSelector(handlePokemonSelect),
                     const SizedBox(height: 16),
           DropdownButton<String>(
-  value: _selectedValue,  // This can be null initially
+  value: _placement,  // This can be null initially
   hint: Text("Select a placement"),
   items: _dropdownValues.map((String value) {
     // Prepend "Top" to all values except for "Champion" and "finalist"
@@ -123,7 +124,7 @@ return Dialog.fullscreen(
   }).toList(),
   onChanged: (String? newValue) {
     setState(() {
-      _selectedValue = newValue!;
+      _placement = newValue!;
     });
   },
 )
@@ -148,8 +149,20 @@ return Dialog.fullscreen(
               if (tournamentName == null || selectedDate == null || selectedArchetype[0] == null) {
                 return;
               }
-              // Handle add action here
+              
+              Supabase.instance.client.from('tournaments').insert({
+                'user': Supabase.instance.client.auth.currentUser?.id,
+                'name': tournamentName,
+                'deck': selectedArchetype.where((item) => item != null).join(','),
+                'date_from': selectedDate.toString(),
+                'date_to': selectedDate.toString(),
+                'placement': _placement,
+              }).then((result) {
               Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(result)),
+              );
+              });
             },
           ),
         ],
