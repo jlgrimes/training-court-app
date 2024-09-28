@@ -34,6 +34,10 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
           context,
           AsyncSnapshot<List<dynamic>> snapshot,
         ) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
           final tournamentRounds = snapshot.data!;
 
           return Scaffold(
@@ -47,11 +51,11 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                     // the App.build method, and use it to set our appbar title.
                     title: Text(tournament.name),
                 ),
-                body: Center(child: ListView.builder(
+                body: Center(child: snapshot.hasData ? ListView.builder(
               itemCount: tournamentRounds.length,
               itemBuilder: ((context, index) {
                 return TournamentRound(tournamentRounds[index]);
-              })))
+              })) : CircularProgressIndicator())
               );
         });
   }
