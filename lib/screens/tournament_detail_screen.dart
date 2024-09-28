@@ -45,7 +45,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                 ),
                 floatingActionButton: FloatingActionButton(onPressed: (){
                             _dialogBuilder(context);
-                          }),
+                          }, child: const Icon(Icons.add)),
                 body: Center(child: ListView.builder(
               itemCount: rounds.length,
               itemBuilder: ((context, index) {
