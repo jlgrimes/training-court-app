@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trainingcourt/components/archetype/archetype_autocomplete.dart';
 
 class AddRoundDialog extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ return AlertDialog(
           title: const Text('Add round'),
           content: Column(
             children: [
+              ArchetypeAutocomplete(),
                           TextField(
               onChanged: (text) {
                 setState(() {
