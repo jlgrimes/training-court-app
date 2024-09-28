@@ -8,12 +8,8 @@ class PokemonSprites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (pokemonNameString == null) {
-      return SizedBox.shrink();
-    }
-
-    if (pokemonNameString!.isEmpty) {
-      return SizedBox.shrink();
+    if (pokemonNameString == null || pokemonNameString!.isEmpty) {
+      return Icon(Icons.question_mark_rounded);
     }
 
     if (!pokemonNameString!.contains(',')) {
