@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:trainingcourt/auth/sign_in.dart';
@@ -12,7 +13,9 @@ void main() async {
     anonKey: dotenv.get('SUPABASE_ANON_KEY'),
   );
 
-  runApp(const MyApp());
+  runApp(
+    ProviderScope(child: MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {

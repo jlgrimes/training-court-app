@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:trainingcourt/models/generated_classes.dart';
 import 'package:trainingcourt/screens/logs_screen.dart';
 import 'package:trainingcourt/screens/tournaments_screen.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,15 +36,16 @@ class _HomePageState extends State<HomeScreen> {
       .order('round_num', ascending: true)
       .withConverter(Tournament_rounds.converter);
 
+  final Future<dynamic> _pokedexFuture = http.get(Uri.parse('https://www.trainingcourt.app/api/pokedex'));
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.wait([_logsFuture, _tournamentsFuture, _tournamentRoundsFuture]),
+        future: Future.wait([_logsFuture, _tournamentsFuture, _tournamentRoundsFuture, _pokedexFuture]),
         builder: (
           context,
           AsyncSnapshot<List<dynamic>> snapshot,
         ) {
-          print(snapshot.toString());
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
@@ -53,6 +57,7 @@ class _HomePageState extends State<HomeScreen> {
           final _logs = snapshot.data![0];
           final _tournaments = snapshot.data![1];
           final _tournamentRounds = snapshot.data![2];
+          final _pokedex = snapshot.data![3];
 
           return DefaultTabController(
               length: 3,

@@ -32,57 +32,71 @@ class _AddTournamentDialogState extends State<AddTournamentDialog> {
 
   @override
   Widget build(BuildContext context) {
-return AlertDialog(
-          title: const Text('Add tournament'),
-          content: Column(
+return Dialog.fullscreen(
+  child: Scaffold(
+    appBar: AppBar(
+      title: const Text('Add tournament'),
+      leading: IconButton(
+        icon: const Icon(Icons.close),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          TextField(
+            onChanged: (text) {
+              // Handle text input here
+            },
+            decoration: InputDecoration(
+              labelText: 'Enter text',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
             children: [
-                          TextField(
-              onChanged: (text) {
-                setState(() {
-                  textInput = text;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Enter text',
-                border: OutlineInputBorder(),
+              Expanded(
+                child: Text(
+                  'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],
+                  style: const TextStyle(fontSize: 18),
+                ),
               ),
-            ),
-                        Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Select Date'),
-                ),
-              ],
-            ),
+              ElevatedButton(
+                onPressed: () => _selectDate(context),
+                child: const Text('Select Date'),
+              ),
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Add'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        ],
+      ),
+    ),
+    bottomNavigationBar: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          const SizedBox(width: 8),
+          TextButton(
+            child: const Text('Add'),
+            onPressed: () {
+              // Handle add action here
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    ),
+  ),
+);
   }
 }
